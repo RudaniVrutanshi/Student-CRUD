@@ -1,0 +1,257 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Document</title>
+<link
+	href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
+	rel="stylesheet">
+<script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"></script>
+<script
+	src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
+<script
+	src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
+<style>
+body {
+	margin: 0;
+	padding: 0;
+	font-family: Arial, sans-serif;
+	background: linear-gradient(to right, #16222A, #3A6073);
+	overflow-x: hidden;
+}
+
+.navbar {
+	position: fixed;
+	right: 0;
+	top: 0;
+	height: 100vh;
+	width: 200px;
+	background: rgba(0, 0, 0, 0.5);
+	backdrop-filter: blur(10px);
+	border-top-left-radius: 30px;
+	border-bottom-left-radius: 30px;
+	display: flex;
+	flex-direction: column;
+	justify-content: center;
+	align-items: center;
+	z-index: 1;
+	transition: width 0.3s;
+}
+
+.navbar:hover {
+	width: 240px;
+}
+
+.navbar ul {
+	list-style: none;
+	padding: 0;
+	margin: 0;
+	text-align: center;
+}
+
+.navbar ul li {
+	margin-bottom: 20px;
+}
+
+.navbar ul li a {
+	text-decoration: none;
+	color: #fff;
+	font-size: 18px;
+	padding: 10px 20px;
+	border-radius: 20px;
+	display: block;
+	transition: background-color 0.3s, color 0.3s;
+}
+
+.navbar ul li a:hover {
+	background-color: #ff497c;
+	color: #fff;
+	transform: scale(1.1);
+	box-shadow: 0 0 10px rgba(255, 73, 124, 0.5);
+}
+
+.container {
+	max-width: 800px;
+	margin: 0 auto;
+	padding: 40px;
+	text-align: center;
+	color: #fff;
+}
+
+h1 {
+	font-size: 3em;
+	margin-bottom: 20px;
+}
+
+p {
+	font-size: 1.2em;
+	margin-bottom: 30px;
+}
+
+.btn {
+	display: inline-block;
+	padding: 10px 20px;
+	background-color: #ff497c;
+	color: #fff;
+	text-decoration: none;
+	border-radius: 5px;
+	transition: background-color 0.3s;
+}
+
+.btn:hover {
+	background-color: #ff0055;
+}
+
+footer {
+	position: fixed;
+	bottom: 0;
+	left: 0;
+	width: 100%;
+	height: 60px;
+	text-align: center;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+}
+
+footer p {
+	margin: 0;
+	color: #fff;
+}
+
+.invalid-credentials {
+	display: none;
+	position: fixed;
+	top: 50%;
+	left: 50%;
+	transform: translate(-50%, -50%);
+	text-align: center;
+}
+</style>
+</head>
+<body>
+
+	<div class="navbar">
+		<ul>
+			<li><a href="insert.html">Add</a></li>
+			<li><a href="update.html">Update</a></li>
+			<li><a href="delete.html">Delete</a></li>
+			<li><a href="show.html">ShowData</a></li>
+			<li><a href="/webpractical/login.html" id="logoutBtn">
+					<button class="btn btn-outline-danger d-inline-block ml-auto"
+						type="button">Log-out</button>
+			</a></li>
+			<li><p id="time" class="bg-danger text-white p-0">Welcome
+					back ... &#128515;</p></li>
+		</ul>
+	</div>
+
+	<div class="container">
+		<h1>Welcome to Student Management</h1>
+		<p>This is a My Servlet website.</p>
+		<a href="#" class="btn">Get Started</a>
+		
+	</div>
+
+	<footer>
+		<p>&copy; Created by Vrutanshi Rudani&trade;</p>
+	</footer>
+
+	<div class="invalid-credentials">
+		<img
+			src="https://cdn.dribbble.com/users/3008811/screenshots/7090670/media/5a61f4778d6a527572a773c1f69001b8.gif"
+			alt="" width="50%" height="50%">
+		<p>Your credentials are invalid. Please log in.</p>
+		<a href="/webpractical/login.html" id="logoutBtn" class="btn btn-info">Log-In</a>
+	</div>
+	
+	
+	<!-- ==============================(Time out model)==================================================== -->
+		<!-- Modal for time up -->
+		<div class="modal fade" id="exampleModalTimeUp" tabindex="-1"
+			aria-labelledby="exampleModalLabelTimeUp" aria-hidden="true">
+			<div class="modal-dialog modal-dialog-centered">
+				<div class="modal-content">
+					<div class="modal-header">
+						<h5 class="modal-title" id="exampleModalLabelTimeUp">Time's
+							Up!</h5>
+						<button type="button" class="btn-close" data-bs-dismiss="modal"
+							aria-label="Close"></button>
+					</div>
+					<div class="modal-body">Your session has expired. Please log
+						in again.</div>
+					<div class="modal-footer">
+
+						<a href="/webpractical/login.html" id="logoutBtn">
+							<button class="btn btn-info">Log-In</button>
+						</a>
+						
+					</div>
+				</div>
+			</div>
+		</div>
+		
+
+	<script>
+		$(document).ready(
+				function() {
+					// Check if username exists in local storage
+					var username = localStorage.getItem("userID");
+
+					// Check if WelcomeMSG exists in local storage
+					var welcomeMsgExists = localStorage.getItem("WelcomeMSG");
+
+					// Show or hide content based on username existence
+					if (username) {
+						$(".container, footer , .navbar ").show();
+						$(".invalid-credentials").hide();
+
+						// Check if WelcomeMSG exists
+						if (!welcomeMsgExists) {
+							var utterance = new SpeechSynthesisUtterance(
+									"Welcome back " + username);
+							window.speechSynthesis.speak(utterance);
+							localStorage.setItem("WelcomeMSG", true);
+						}
+					} else {
+						$(".container, footer , .navbar").hide();
+						$(".invalid-credentials").show();
+					}
+
+					// Add event listener to Log-out button
+					$("#logoutBtn").on("click", function() {
+						// Remove the username item and WelcomeMSG from localStorage
+						localStorage.removeItem("userID");
+						localStorage.removeItem("WelcomeMSG");
+					});
+					
+					
+					// Countdown timer function
+				    function startCountdown(minutes) {
+				        var seconds = minutes * 60;
+				        var countdownInterval = setInterval(function () {
+				            var minutesRemaining = Math.floor(seconds / 60);
+				            var secondsRemaining = seconds % 60;
+				            $("#time").text("Time remaining: " + minutesRemaining + "m " + secondsRemaining + "s");
+				            seconds--;
+				            if (seconds < 0) {
+				                clearInterval(countdownInterval);
+				                $("#exampleModalTimeUp").modal("show"); // Show modal when time is up
+				                localStorage.removeItem("userID"); // Remove localStorage item
+				                localStorage.removeItem("WelcomeMSG"); // Remove localStorage item
+
+				                var utterance = new SpeechSynthesisUtterance("Your session has expired. Please log in again.");
+				                window.speechSynthesis.speak(utterance);
+				            }
+				        }, 1000);
+				    }
+
+				    // Start the countdown when the document is ready
+				    startCountdown(2); // Change to the desired countdown time in minutes
+				});
+
+			</script>
+
+</body>
+</html>
